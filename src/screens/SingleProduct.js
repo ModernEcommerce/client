@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './../components/Header';
 import Rating from '../components/homeComponents/Rating';
 import { Link } from 'react-router-dom';
 import Message from './../components/LoadingError/Error';
-import products from "../data/Products"
+import axios from 'axios';
 
 const SingleProduct = ({match}) => {
-  const product = products.find((p)=> p._id === match.params.id);
+  const [product, setProduct] = useState({})
+  useEffect(()=>{
+    const fetchProduct = async() => {
+      const {data} = await axios.get(`/api/products/${match.params.id}`);
+      setProduct(data)
+    }
+    fetchProduct();
+  },[match])
   return (
     <>
       <Header />
@@ -36,7 +43,7 @@ const SingleProduct = ({match}) => {
                   ) : (
                     <span>unavailable</span>
                   )}
-                </div>
+                </div> 
                 <div className="flex-box d-flex justify-content-between align-items-center">
                   <h6>Reviews</h6>
                   <Rating
