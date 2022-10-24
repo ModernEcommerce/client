@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './../components/Header';
 import Rating from '../components/homeComponents/Rating';
 import { Link } from 'react-router-dom';
@@ -6,16 +6,23 @@ import Message from './../components/LoadingError/Error';
 import { useDispatch, useSelector } from "react-redux";
 import { listProductDetails } from '../Redux/Actions/ProductAction';
 import Loading from "./../components/LoadingError/Loading"
-const SingleProduct = ({match}) => {
+import { addToCart } from '../Redux/Actions/CartAction';
+const SingleProduct = ({ history, match}) => {
+  const [quantity, setQuantity] = useState(1);
   const productId = match.params.id;
   const dispatch = useDispatch();
   const productDetail = useSelector((state)=> state.productDetails)
-
   const { loading, error, product } = productDetail
+
+  const handleAddToCart = (e) =>{
+    e.preventDefault();
+    dispatch(addToCart(productId, quantity));
+    history.push(`/cart/${productId}?qty=${quantity}`);
+  }
   useEffect(()=>{
     dispatch(listProductDetails(productId))
+  },[dispatch, productId])
 
-  },[dispatch,productId])
   return (
     <>
       <Header />
@@ -61,7 +68,7 @@ const SingleProduct = ({match}) => {
                       <>
                         <div className="flex-box d-flex justify-content-between align-items-center">
                           <h6>Quantity</h6>
-                          <select>
+                          <select value={quantity} onChange={(e)=> setQuantity(e.target.value)}>
                             {[...Array(product.countInStock).keys()].map(
                               (x) => (
                                 <option key={x + 1} value={x + 1}>
@@ -71,7 +78,7 @@ const SingleProduct = ({match}) => {
                             )}
                           </select>
                         </div>
-                        <button className="round-black-btn">
+                        <button onClick={handleAddToCart} className="round-black-btn">
                           Add To Cart
                         </button>
                       </>

@@ -14,8 +14,17 @@ import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import NotFound from "./screens/NotFound";
-
+import { useSelector } from "react-redux";
 const App = () => {
+  const data = useSelector((state)=> state.theme)
+  if(data.theme === "dark"){
+    document.body.classList.remove("bg-light")
+    document.body.classList.add("bg-dark")
+  }
+  else{
+    document.body.classList.remove("bg-dark")
+    document.body.classList.add("bg-light")
+  }
   return (
     <Router>
       <Switch>
