@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './../components/Header';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToCart } from '../Redux/Actions/CartAction';
+import { addToCart, removeFromCart } from '../Redux/Actions/CartAction';
 
 const CartScreen = () => {
   window.scrollTo(0, 0);
@@ -22,8 +22,9 @@ const CartScreen = () => {
         {cartItems.map((item, index) => {
           return (
             <div key={index}>
-              <div className="cart-iterm row">
+              <div className="cart-item row">
                 <div
+                  onClick={() => dispatch(removeFromCart(item.product))}
                   className="remove-button d-flex justify-content-center align-items-center"
                 >
                   <i className="fas fa-times"></i>
@@ -39,6 +40,7 @@ const CartScreen = () => {
                 <div className="cart-qty col-md-2 col-sm-5 mt-md-5 mt-3 mt-md-0 d-flex flex-column justify-content-center">
                   <h6>QUANTITY</h6>
                   <select
+                    value={item.qty}
                     onChange={(e) =>
                       dispatch(addToCart(item.product, Number(e.target.value)))
                     }
@@ -76,10 +78,12 @@ const CartScreen = () => {
         ) : (
           ''
         )}
-        {/* End of cart items */}
-        <div className="total">
+ {/* End of cart items */}
+ <div className="total">
           <span className="sub">total:</span>
-          <span className="total-price">#566</span>
+          <span className="total-price">
+          ${cartItems.reduce((sum, curr) => sum + curr.price * curr.qty, 0)}
+          </span>
         </div>
         <hr />
         <div className="cart-buttons d-flex align-items-center row">

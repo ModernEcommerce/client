@@ -173,14 +173,14 @@ textarea:focus {
   height: 250px;
   object-fit: contain;
 }
-.shoptext {
+.shop-text {
   padding-top: 10px;
 }
-.shoptext p a {
+.shop-text p a {
   font-size: medium;
   font-weight: 700;
 }
-.shoptext h3 {
+.shop-text h3 {
   color: #252525;
   margin-top: 13px;
   font-weight: bold;
@@ -488,7 +488,7 @@ textarea:focus {
   width: 100%;
 }
 /* CART */
-.cart-iterm {
+.cart-item {
   margin: 40px 0;
   padding: 20px;
   background-color: white;
@@ -655,7 +655,7 @@ textarea:focus {
   border: 1px solid black;
 }
 .bg-light{
-  background-color: #f3ebf6;
+  background-color: #F8FAFC !important;
   color:#46045e;
 }
 .bg-light .border-product{
@@ -665,4 +665,46 @@ textarea:focus {
 .bg-dark{
   background-color: #46045e;
   color: #f3ebf6;
+}
+
+.radio-btn {
+  width: 50px;
+  height: 26.666666667px;
+  padding: 3.3333333333px;
+  background-color: #27173a;
+  border-radius: 50px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.radio-btn #radio-inner {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background-color: #ffc207;
+  border-radius: 50%;
+  transition: all 0.5s;
+}
+
+.radio-btn #radio-inner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -20%;
+  width: 100%;
+  height: 100%;
+  background-color: #27173a;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: all 0.5s;
+}
+
+.radio-btn #radio-inner.active {
+  transform: translateX(calc(50px - 26.666666667px));
+}
+
+/* độ cong */
+.radio-btn #radio-inner.active::before {
+  left: -9px; 
+  transform: scale(1);
 }
