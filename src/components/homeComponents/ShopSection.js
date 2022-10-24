@@ -19,7 +19,7 @@ const ShopSection = () => {
         <div className="section">
           <div className="row">
             <div className="col-lg-12 col-md-12 article">
-              <div className="shopcontainer row">
+              <div className="shop-container row">
                 {
                   loading ? (<div className="mb-5"><Loading/></div>) : error ? (<Message variant="alert-danger">{error}</Message>) 
                   :
@@ -37,7 +37,7 @@ const ShopSection = () => {
                               </div>
                             </Link>
 
-                            <div className="shoptext">
+                            <div className="shop-text">
                               <p>
                                 <Link to={`/products/${product._id}`}>
                                   {product.name}

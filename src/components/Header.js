@@ -5,9 +5,13 @@ import { changeTheme } from '../Redux/Actions/ThemeAction'
 const Header = () => {
   const dispatch = useDispatch();
   const data = useSelector((state)=> state.theme)
+  const { cartItems } = useSelector(state => state.cart);
+  
   const handleChangeTheme = (e) =>{
     e.preventDefault();
     dispatch(changeTheme(data.theme === 'light' ? 'dark' : 'light'))
+    var element = document.getElementById("radio-inner");
+    element.classList.toggle("active");
   }
   return (
     <div>
@@ -21,7 +25,9 @@ const Header = () => {
             </div>
             <div className=" col-12 col-lg-6 justify-content-center justify-content-lg-end d-flex align-items-center">
               <Link to="">
-                <button onClick={handleChangeTheme}>Theme</button>
+              <div className="radio-btn" onClick={handleChangeTheme}>
+                <div id="radio-inner"></div>
+              </div>
               </Link>
               <Link to="">
                 <i className="fab fa-facebook-f"></i>
@@ -141,7 +147,9 @@ const Header = () => {
 
                 <Link to="/cart">
                   <i className="fas fa-shopping-bag"></i>
-                  <span className="badge">4</span>
+                  <span className="badge">{
+                    cartItems.length > 0 && cartItems.length
+                  }</span>
                 </Link>
               </div>
             </div>
