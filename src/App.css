@@ -10,11 +10,9 @@ body {
 }
 a {
   text-decoration: none;
-  color: black;
+  color: unset;
 }
-a:hover {
-  color: black;
-}
+
 button a{
   display: block;
 }
@@ -179,7 +177,8 @@ textarea:focus {
   padding-top: 10px;
 }
 .shoptext p a {
-  color: #252525;
+  font-size: medium;
+  font-weight: 700;
 }
 .shoptext h3 {
   color: #252525;
@@ -654,4 +653,16 @@ textarea:focus {
 .page-item.active .page-link {
   background-color: black;
   border: 1px solid black;
+}
+.bg-light{
+  background-color: #f3ebf6;
+  color:#46045e;
+}
+.bg-light .border-product{
+  border: 1px solid #C1CDC1
+}
+
+.bg-dark{
+  background-color: #46045e;
+  color: #f3ebf6;
 }
