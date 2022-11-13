@@ -1,18 +1,59 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch ,useSelector } from "react-redux";
 import { changeTheme } from '../Redux/Actions/ThemeAction'
+import { getUserDetails, logout } from "../Redux/Actions/UserAction";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 const Header = () => {
+  const MyVerticallyCenteredModal = (props) =>{
+    return (
+      <Modal
+        {...props}
+        size="md"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Log out
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Are you sure you want to log out ?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={()=>{
+            dispatch(logout())
+            history.push('/')
+          }}>OK</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  const [modalShow, setModalShow] = React.useState(false);
   const dispatch = useDispatch();
+  const history  = useHistory();
+
   const data = useSelector((state)=> state.theme)
   const { cartItems } = useSelector(state => state.cart);
+  const { userInfo } = useSelector(state => state.userLogin);
+  const {user} = useSelector(state => state.userDetails);
   
+  const handleLogout = e =>{
+    setModalShow(true)
+  }
+
   const handleChangeTheme = (e) =>{
     e.preventDefault();
     dispatch(changeTheme(data.theme === 'light' ? 'dark' : 'light'))
     var element = document.getElementById("radio-inner");
     element.classList.toggle("active");
   }
+  useEffect(()=>{
+    dispatch(getUserDetails())
+  }, [dispatch])
   return (
     <div>
       {/* Top Header */}
@@ -57,40 +98,48 @@ const Header = () => {
               <div className="row ">
                 <div className="col-6 d-flex align-items-center">
                   <Link className="navbar-brand" to="/">
-                    <img alt="logo" src="/images/logo.png" />
+                    <img alt="logo" src="/images/logo.png" />	
                   </Link>
                 </div>
                 <div className="col-6 d-flex align-items-center justify-content-end Login-Register">
-                  <div className="btn-group">
-                    <button
-                      type="button"
-                      className="name-button dropdown-toggle"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i className="fas fa-user"></i>
-                    </button>
-                      <div className="dropdown-menu">
-                        <Link className="dropdown-item" to="/profile">
-                          Profile
-                        </Link>
+                  {
+                    userInfo && (
+                      <div className="btn-group">
+                        <button
+                          type="button"
+                          className="name-button dropdown-toggle"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i className="fas fa-user"></i>
+                        </button>
+                        <div className="dropdown-menu">
+                          <Link className="dropdown-item" to="/profile">
+                            Profile
+                          </Link>
 
-                        <Link className="dropdown-item" to="#">
-                          Logout
-                        </Link>
+                          <Link className="dropdown-item" to="#" onClick={handleLogout}>
+                            Logout
+                          </Link>
                         </div>
                       </div>
+                    )
 
+                  }
                   <Link to="/cart" className="cart-mobile-icon">
                     <i className="fas fa-shopping-bag"></i>
-                    <span className="badge">4</span>
+                    <span className="badge">{
+                      cartItems.length
+                    }</span>
                   </Link>
                 </div>
                 <div className="col-12 d-flex align-items-center">
-                  <form className="input-group" >
+                  <form className="input-group">
                     <input
                       type="search"
+                      // value={keyword}
+                      // onChange={e => setKeyword(e.target.value)}
                       className="form-control rounded search"
                       placeholder="Search"
                     />
@@ -124,26 +173,48 @@ const Header = () => {
                 </form>
               </div>
               <div className="col-md-3 d-flex align-items-center justify-content-end Login-Register">
-                <div className="btn-group">
-                  <button
-                    type="button"
-                    className="name-button dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    Hi, PhucMinh
-                  </button>
-                  <div className="dropdown-menu">
-                    <Link className="dropdown-item" to="/profile">
-                      Profile
-                    </Link>
+                {
+                  userInfo ? (
+                    <div className="btn-group">
+                      <button
+                        type="button"
+                        className="name-button dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        Hi, {user?.name}
+                      </button>
+                      <div className="dropdown-menu">
+                        <Link className="dropdown-item" to="/profile">
+                          Profile
+                        </Link>
 
-                    <Link className="dropdown-item" to="#">
-                      Logout
-                    </Link>
-                  </div>
-                </div>
+                        <Link className="dropdown-item" to="#" onClick={handleLogout}>
+                          Logout
+                        </Link>
+                        <MyVerticallyCenteredModal
+                          show={modalShow}
+                          onHide={() => setModalShow(false)}
+                        />
+                      </div>
+                    </div>
+                  )
+                    :
+                    (
+                      < >
+                      
+                          <Link  to="/login">
+                            Login
+                          </Link>
+
+                          <Link  to="register">
+                            Register
+                          </Link>
+                        
+                      </>
+                    )
+                }
 
                 <Link to="/cart">
                   <i className="fas fa-shopping-bag"></i>

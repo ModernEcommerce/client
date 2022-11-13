@@ -5,6 +5,7 @@ import ContactInfo from "./../components/homeComponents/ContactInfo";
 import CallToActionSection from "../components/homeComponents/CallToActionSection";
 import Footer from "./../components/Footer";
 const HomeScreen = ({match}) => {
+
   window.scrollTo(0, 0);
   return (
     <div >
