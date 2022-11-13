@@ -657,6 +657,7 @@ textarea:focus {
 .bg-light{
   background-color: #F8FAFC !important;
   color:#46045e;
+  border: 1px solid black !important;
 }
 .bg-light .border-product{
   border: 1px solid #C1CDC1

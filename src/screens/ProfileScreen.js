@@ -1,27 +1,35 @@
-import React from "react";
+import moment from "moment";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/Header";
 import ProfileTabs from "../components/profileComponents/ProfileTabs";
+import { getUserDetails } from "../Redux/Actions/UserAction";
 import Orders from "./../components/profileComponents/Orders";
 const ProfileScreen = () => {
-  window.scrollTo(0,0);
+  const dispatch = useDispatch();
+  const {userInfo} = useSelector(state => state.userLogin);
+  // const {orders} = useSelector(state => state.orderMyList)
+  useEffect(() =>{
+    dispatch(getUserDetails());
+  }, [dispatch])
   return (
     <>
       <Header />
       <div className="container mt-lg-5 mt-3">
         <div className="row align-items-start">
           <div className="col-lg-4 p-0 shadow ">
-            <div className="author-card pb-0 pb-md-3">
+            <div className="author-card pb-0 pb-md-3 wizard">
               <div className="author-card-cover"></div>
-              <div className="author-card-profile row">
+              <div className="author-card-profile row nav button ">
                 <div className="author-card-avatar col-md-5">
                   <img src="./images/user.png" alt="userprofileimage" />
                 </div>
                 <div className="author-card-details col-md-7">
                   <h5 className="author-card-name mb-2">
-                    <strong>PhucMinh</strong>
+                    <strong>{userInfo.name}</strong>
                   </h5>
                   <span className="author-card-position">
-                    <>Joined Dec 12 2021</>
+                    <>Joined {moment(userInfo.createdAt).format('LL')}</>
                   </span>
                 </div>
               </div>
@@ -57,7 +65,7 @@ const ProfileScreen = () => {
                     aria-selected="false"
                   >
                     Orders List
-                    <span className="badge2">3</span>
+                    <span className="badge2">2</span>
                   </button>
                 </div>
               </div>
