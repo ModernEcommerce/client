@@ -15,6 +15,7 @@ import {
     USER_UPDATE_PROFILE_SUCCESS,
   } from "../Constants/UserConstant";
   import axios from "axios";
+import { CART_CLEAR_ITEMS } from "../Constants/CartConstant";
   // import { ORDER_LIST_MY_RESET } from "../Constants/OrderConstants";
   // import { CART_CLEAR_ITEMS } from "../Constants/CartConstants";
 
@@ -45,11 +46,11 @@ import {
   };
   
   // LOGOUT
-  export const logout = () => (dispatch) => {
+  export const logout = () => async(dispatch) => {
     localStorage.removeItem("userInfo");
     dispatch({ type: USER_LOGOUT });
     dispatch({ type: USER_DETAILS_RESET });
-    // dispatch({type: CART_CLEAR_ITEMS});
+    dispatch({type: CART_CLEAR_ITEMS});
     // dispatch({ type: ORDER_LIST_MY_RESET });
   };
   
