@@ -14,7 +14,9 @@ import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import NotFound from "./screens/NotFound";
+import PrivateRouter from "./PrivateRouter";
 import { useSelector } from "react-redux";
+
 const App = () => {
   const data = useSelector((state)=> state.theme)
   if(data.theme === "dark"){
@@ -29,15 +31,16 @@ const App = () => {
     <Router>
       <Switch>
         <Route path="/" component={HomeScreen} exact />
+        <Route path="/search/:keyword" component={HomeScreen} exact />
         <Route path="/products/:id" component={SingleProduct} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <Route path="/profile" component={ProfileScreen}/>
-        <Route path="/cart/:id?" component={CartScreen}/>
-        <Route path="/shipping" component={ShippingScreen}/>
-        <Route path="/payment" component={PaymentScreen}/>
-        <Route path="/placeorder" component={PlaceOrderScreen}/>
-        <Route path="/order" component={OrderScreen}/>
+        <PrivateRouter path="/profile" component={ProfileScreen} />
+        <PrivateRouter path="/cart/:id?" component={CartScreen} />
+        <PrivateRouter path="/shipping" component={ShippingScreen} />
+        <PrivateRouter path="/payment" component={PaymentScreen} />
+        <PrivateRouter path="/placeorder" component={PlaceOrderScreen} />
+        <PrivateRouter path="/order/:id" component={OrderScreen} />
         <Route path="*" component={NotFound} />
       </Switch>
     </Router>
