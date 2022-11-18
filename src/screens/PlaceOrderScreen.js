@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import Message from "../components/LoadingError/Error";
 import Loading from "../components/LoadingError/Loading";
 import { createOrder } from "../Redux/Actions/OrderAction";
-import { ORDER_CREATE_RESET } from "../Redux/Constants/OrderConstant";
+import { ORDER_CREATE_RESET, ORDER_DETAILS_RESET } from "../Redux/Constants/OrderConstant";
 import Header from "./../components/Header";
 
 const PlaceOrderScreen = () => {
@@ -35,9 +35,8 @@ const PlaceOrderScreen = () => {
   useEffect(() => {
     if (success) {
       history.push(`/order/${order._id}`);
-      dispatch({
-        type: ORDER_CREATE_RESET
-      })
+      dispatch({type: ORDER_CREATE_RESET})
+      dispatch({type: ORDER_DETAILS_RESET})
     }
     if(!paymentMethod){
       history.push('/payment');
