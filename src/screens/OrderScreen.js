@@ -21,10 +21,8 @@ const OrderScreen = () => {
     order.itemsPrice = order.orderItems.reduce((sum, current) => sum + current.price * current.qty, 0).toFixed(2);
   }
   useEffect(() => {
-
     const addPaypal = async () =>{
       const {data: clientId} = await axios.get('/api/config/paypal');
-      console.log(clientId)
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
@@ -33,19 +31,25 @@ const OrderScreen = () => {
         setSdkReady(true)
       }
       document.body.appendChild(script);
-
     }
+    // chưa có thông tin order hoặc success là true (cập nhật lại orderDetail)
     if(!order || success){
       dispatch({type: ORDER_PAY_RESET})
-      dispatch(getOrderDetails(idParam));
+      dispatch(getOrderDetails(idParam));  
     }
+    // chưa trả
     else if(!order.isPaid){
+      //chưa hiện button paypal thì hiện còn không thì setSdkReady(true)
       if(!window.paypal){
         addPaypal();
       }
       else{
         setSdkReady(true);
       }
+    }
+    // trả rồi
+    else if(order.isPaid){
+      setSdkReady(false);
     }
     
   }, [dispatch, idParam, success, order])
@@ -222,7 +226,7 @@ const OrderScreen = () => {
                           loadingPay ? (<Loading />) : errorPay ? (<Message>{error}</Message>)
                           :
                           (
-                            !sdkReady ? (<Loading />)
+                            !sdkReady ? (<div className="paid-button"><p>PAID</p></div>)
                             :
                             <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler} />
                           )
