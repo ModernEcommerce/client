@@ -155,7 +155,7 @@ const PlaceOrderScreen = () => {
                     <td>
                       <strong>Tax</strong>
                     </td>
-                    <td>$5{cart.taxPrice}</td>
+                    <td>${cart.taxPrice}</td>
                   </tr>
                   <tr>
                     <td>

@@ -78,8 +78,9 @@ const CartScreen = () => {
         ) : (
           ''
         )}
- {/* End of cart items */}
- <div className="total">
+        
+        {/* End of cart items */}
+        <div className="total">
           <span className="sub">total:</span>
           <span className="total-price">
           ${cartItems.reduce((sum, curr) => sum + curr.price * curr.qty, 0)}

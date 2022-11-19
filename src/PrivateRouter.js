@@ -1,11 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route} from "react-router-dom";
-
-
 function PrivateRouter({component: Component, ...rest}) {
   const { userInfo } = useSelector((state) => state.userLogin);
-  
+  console.log({...rest})
   return (
     <Route
       {...rest}

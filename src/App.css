@@ -476,13 +476,13 @@ textarea:focus {
 }
 /* orders */
 .link {
-  color: blue;
-  border-bottom: 1px solid blue;
+  border-bottom: 1px solid black;
   padding-bottom: 5px;
   font-size: 15px;
 }
 .link:hover {
-  color: blue;
+  color: blue ;
+  cursor: pointer;
 }
 .table-responsive {
   width: 100%;
@@ -708,4 +708,13 @@ textarea:focus {
 .radio-btn #radio-inner.active::before {
   left: -9px; 
   transform: scale(1);
+}
+
+.paid-button{
+  background-color: #1cb803;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0px;
 }

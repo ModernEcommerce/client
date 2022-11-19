@@ -8,7 +8,7 @@ import Orders from "./../components/profileComponents/Orders";
 const ProfileScreen = () => {
   const dispatch = useDispatch();
   const {userInfo} = useSelector(state => state.userLogin);
-  // const {orders} = useSelector(state => state.orderMyList)
+  const {orders} = useSelector(state => state.orderMyList)
   useEffect(() =>{
     dispatch(getUserDetails());
   }, [dispatch])
@@ -65,7 +65,7 @@ const ProfileScreen = () => {
                     aria-selected="false"
                   >
                     Orders List
-                    <span className="badge2">2</span>
+                    <span className="badge2">{orders && orders.length}</span>
                   </button>
                 </div>
               </div>
