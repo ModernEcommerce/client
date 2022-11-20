@@ -2,34 +2,72 @@ import React, { useEffect, useState } from 'react';
 import Header from './../components/Header';
 import Rating from '../components/homeComponents/Rating';
 import { Link } from 'react-router-dom';
+import Loading from './../components/LoadingError/Loading';
 import Message from './../components/LoadingError/Error';
-import { useDispatch, useSelector } from "react-redux";
-import { listProductDetails } from '../Redux/Actions/ProductAction';
-import Loading from "./../components/LoadingError/Loading"
+import { useParams, useHistory } from 'react-router-dom';
+import {
+  createProductReview,
+  listProductDetails,
+} from '../Redux/Actions/ProductAction';
+import { useSelector, useDispatch } from 'react-redux';
+import { PRODUCT_CREATE_REVIEW_RESET, PRODUCT_DETAILS_RESET } from '../Redux/Constants/ProductConstants';
 import { addToCart } from '../Redux/Actions/CartAction';
-const SingleProduct = ({ history, match}) => {
-  const [quantity, setQuantity] = useState(1);
-  const productId = match.params.id;
-  const dispatch = useDispatch();
-  const productDetail = useSelector((state)=> state.productDetails)
-  const { loading, error, product } = productDetail
+import moment from 'moment';
 
-  const handleAddToCart = (e) =>{
+const SingleProduct = () => {
+  const [qty, setQty] = useState(1);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState('');
+
+  const { id } = useParams();
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const { userInfo } = useSelector((state) => state.userLogin);
+  const { loading, error, product } = useSelector((state) => state.productDetails );
+  const { error: errorReview, success } = useSelector((state) => state.productReview);
+
+
+  
+  const AddToCart = (e) => {
     e.preventDefault();
-    dispatch(addToCart(productId, quantity));
-    history.push(`/cart/${productId}?qty=${quantity}`);
-  }
-  useEffect(()=>{
-    dispatch(listProductDetails(productId))
-  },[dispatch, productId])
+    dispatch(addToCart(id, qty));
+    history.push(`/cart/${id}?qty=${qty}`);
+  };
+
+  const handleSubmitReview = (e) => {
+    e.preventDefault();
+    dispatch(createProductReview(id, {rating,comment}));
+  };
+
+  useEffect(() => {
+    if (success) {
+      setRating(0);
+      setComment('');
+      dispatch({ type: PRODUCT_CREATE_REVIEW_RESET});
+      console.log("1")
+    }
+
+    dispatch(listProductDetails(id));
+    console.log("2")
+
+    return () => {
+      dispatch({type: PRODUCT_DETAILS_RESET});
+      console.log("3")
+    };
+
+  }, [id, dispatch, success]);
+
 
   return (
     <>
       <Header />
       <div className="container single-product">
-      {
-        loading ? (<div className="mb-5"><Loading/></div>) : error ? (<Message variant="alert-danger">{error}</Message>) 
-        :(
+        {loading ? (
+          <Loading />
+        ) : error ? (
+          <Message>{error}</Message>
+        ) : (
           <>
             <div className="row">
               <div className="col-md-6">
@@ -43,7 +81,7 @@ const SingleProduct = ({ history, match}) => {
                     <div className="product-name">{product.name}</div>
                   </div>
                   <p>{product.description}</p>
-    
+
                   <div className="product-count col-lg-7 ">
                     <div className="flex-box d-flex justify-content-between align-items-center">
                       <h6>Price</h6>
@@ -56,19 +94,19 @@ const SingleProduct = ({ history, match}) => {
                       ) : (
                         <span>unavailable</span>
                       )}
-                    </div> 
+                    </div>
                     <div className="flex-box d-flex justify-content-between align-items-center">
                       <h6>Reviews</h6>
                       <Rating
                         value={product.rating}
-                        text={`${product.numReviews} reviews`}
+                        text={`${product.numberReviews} reviews`}
                       />
                     </div>
                     {product.countInStock > 0 ? (
                       <>
                         <div className="flex-box d-flex justify-content-between align-items-center">
                           <h6>Quantity</h6>
-                          <select value={quantity} onChange={(e)=> setQuantity(e.target.value)}>
+                          <select onChange={(e) => setQty(e.target.value)}>
                             {[...Array(product.countInStock).keys()].map(
                               (x) => (
                                 <option key={x + 1} value={x + 1}>
@@ -78,7 +116,7 @@ const SingleProduct = ({ history, match}) => {
                             )}
                           </select>
                         </div>
-                        <button onClick={handleAddToCart} className="round-black-btn">
+                        <button onClick={AddToCart} className="round-black-btn">
                           Add To Cart
                         </button>
                       </>
@@ -87,32 +125,41 @@ const SingleProduct = ({ history, match}) => {
                 </div>
               </div>
             </div>
-                                
-            {/* RATING */}  
             <div className="row my-5">
               <div className="col-md-6">
                 <h6 className="mb-3">REVIEWS</h6>
-                <Message variant={'alert-info mt-3'}>No Reviews</Message>
-                <div className="mb-5 mb-md-3 bg-light p-3 shadow-sm rounded">
-                  <strong>PhucMinh</strong>
-                  <Rating/>
-                  <span>Jan 21 2021</span>
-                  <div className="alert alert-info mt-3">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
-                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                    sunt in culpa qui officia deserunt mollit anim id est laborum
-                  </div>
-                </div>
-              </div>                  
+                {product.reviews.length === 0 && (
+                  <Message variant={'alert-info mt-3'}>No Reviews</Message>
+                )}
+                {product.reviews.map((review, index) => (
+                    <div
+                      key={index}
+                      className="mb-5 mb-md-3 bg-light p-3 shadow-sm rounded"
+                    >
+                      <strong>{review.name}</strong>
+                      <Rating value={review.rating} />
+                      <span>{moment(review.createdAt).calendar()}</span>
+                      <div className="alert alert-info mt-3">
+                        {review.comment}
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
               <div className="col-md-6">
                 <h6>WRITE A CUSTOMER REVIEW</h6>
-                <div className="my-4"></div>
-    
-                <form>
+                <div className="my-4">
+                  {/* {loadingReview && <Loading/>}
+                  {errorReview && (
+                    <Message variant="alert-danger">{errorReview}</Message>
+                  )} */}
+                </div>
+
+                <form onSubmit={handleSubmitReview}>
                   <div className="my-4">
                     <strong>Rating</strong>
                     <select
+                      onChange={(e) => setRating(e.target.value)}
                       className="col-12 bg-light p-3 mt-2 border-0 rounded"
                     >
                       <option value="">Select...</option>
@@ -127,28 +174,40 @@ const SingleProduct = ({ history, match}) => {
                     <strong>Comment</strong>
                     <textarea
                       row="3"
-                      className="col-12 bg-light p-3 mt-2 border-0 rounded">
-                    </textarea>
+                      className="col-12 bg-light p-3 mt-2 border-0 rounded"
+                      onChange={(e) => setComment(e.target.value)}
+                    ></textarea>
                   </div>
                   <div className="my-3">
-                    <button className="col-12 bg-black border-0 p-3 rounded text-white">
-                      SUBMIT
-                    </button>
+                    {!userInfo ? (
+                      <Message variant={'alert-warning'}>
+                        Please{' '}
+                        <Link to="/login">
+                          " <strong>Login</strong> "
+                        </Link>{' '}
+                        to write a review{' '}
+                      </Message>
+                    ) : ( 
+                      !errorReview ? (
+                        <button className="col-12 bg-black border-0 p-3 rounded text-white">
+                        SUBMIT
+                      </button>
+                      ) : (
+                        <Message variant="alert-danger">{errorReview}</Message>
+                      )
+
+                    )}
                   </div>
                 </form>
-                <div className="my-3">
-                  <Message variant={"alert-warning"}>
-                    Please{" "}
-                    <Link to="/login"> 
-                    " <strong>Login</strong> " 
-                    </Link>{" "} to write a review{" "}
-                  </Message>
-                </div>
+                {/* <div className="my-3">
+                    {
+                      
+                    }
+                  </div> */}
               </div>
             </div>
           </>
-        )
-      }
+        )}
       </div>
     </>
   );

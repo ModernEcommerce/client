@@ -6,13 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProduct } from "../../Redux/Actions/ProductAction.js"
 import Loading from "../LoadingError/Loading"
 import Message from "../LoadingError/Error";
-const ShopSection = () => {
+const ShopSection = (props) => {
+  const { keyword, pageNumber } = props
   const dispatch = useDispatch()
   const productList = useSelector((state)=> state.productList)
-  const { loading, error, products } = productList
+  const { loading, error, products, page, pages } = productList
   useEffect(()=>{
-    dispatch(listProduct())
-  },[dispatch])
+    dispatch(listProduct(keyword, pageNumber))
+  },[dispatch, keyword, pageNumber])
   return (
     <>
       <div className="container">
@@ -57,7 +58,10 @@ const ShopSection = () => {
                   )
                 }
                 {/* Pagination */}
-                <Pagination/>
+                <Pagination 
+                  pages={pages} 
+                  currentPage={page} 
+                />
               </div>
             </div>
           </div>
