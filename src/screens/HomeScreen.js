@@ -5,6 +5,8 @@ import ContactInfo from "./../components/homeComponents/ContactInfo";
 import CallToActionSection from "../components/homeComponents/CallToActionSection";
 import Footer from "./../components/Footer";
 const HomeScreen = ({match}) => {
+  const keyword = match.params.keyword
+  const pageNumber = match.params.pageNumber
   const handleClick = (e) =>{
     e.preventDefault()
     window.scrollTo(0, 0)
@@ -24,7 +26,7 @@ const HomeScreen = ({match}) => {
   return (
     <div >
       <Header />
-      <ShopSection/>
+      <ShopSection keyword={keyword} pageNumber={pageNumber}/>
       <CallToActionSection />
       <ContactInfo />
       <Footer />

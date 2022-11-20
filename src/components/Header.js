@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch ,useSelector } from "react-redux";
 import { changeTheme } from '../Redux/Actions/ThemeAction'
 import { getUserDetails, logout } from "../Redux/Actions/UserAction";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import debounce from "lodash.debounce";
 const Header = () => {
   const MyVerticallyCenteredModal = (props) =>{
     return (
@@ -32,7 +33,8 @@ const Header = () => {
     );
   }
 
-  const [modalShow, setModalShow] = React.useState(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [keyword, setKeyword] = useState()
   const dispatch = useDispatch();
   const history  = useHistory();
 
@@ -50,6 +52,21 @@ const Header = () => {
     dispatch(changeTheme(data.theme === 'light' ? 'dark' : 'light'))
     var element = document.getElementById("radio-inner");
     element.classList.toggle("active");
+  }
+
+  const callApiKeywordSearch = (keyword) =>{
+    if( keyword.trim() !== ''){
+      history.push(`/search/${keyword.trim()}`);
+    }
+    else{
+      history.push('/');
+    }
+  }
+  const debounceDropDown = useRef(debounce((keyword) => callApiKeywordSearch(keyword) , 300)).current;
+
+  const handleSubmitSearch = e =>{
+    setKeyword(e.target.value)
+    debounceDropDown(e.target.value);
   }
   useEffect(()=>{
     dispatch(getUserDetails())
@@ -135,13 +152,14 @@ const Header = () => {
                   </Link>
                 </div>
                 <div className="col-12 d-flex align-items-center">
-                  <form className="input-group">
+                  <form onSubmit={handleSubmitSearch} className="input-group">
                     <input
                       type="search"
                       // value={keyword}
-                      // onChange={e => setKeyword(e.target.value)}
                       className="form-control rounded search"
                       placeholder="Search"
+                      value={keyword}
+                      onChange={handleSubmitSearch}
                     />
                     <button type="submit" className="search-button">
                       search
@@ -161,11 +179,13 @@ const Header = () => {
                 </Link>
               </div>
               <div className="col-md-6 col-8 d-flex align-items-center">
-                <form className="input-group">
+                <form onSubmit={handleSubmitSearch} className="input-group">
                   <input
                     type="search"
                     className="form-control rounded search"
                     placeholder="Search"
+                    value={keyword}
+                    onChange={handleSubmitSearch}
                   />
                   <button type="submit" className="search-button">
                     search
