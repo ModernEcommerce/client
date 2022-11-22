@@ -4,6 +4,7 @@ import ShopSection from "./../components/homeComponents/ShopSection";
 import ContactInfo from "./../components/homeComponents/ContactInfo";
 import CallToActionSection from "../components/homeComponents/CallToActionSection";
 import Footer from "./../components/Footer";
+import Toast from "../components/LoadingError/Toast";
 const HomeScreen = ({match}) => {
   const keyword = match.params.keyword
   const pageNumber = match.params.pageNumber
@@ -25,6 +26,7 @@ const HomeScreen = ({match}) => {
 
   return (
     <div >
+      <Toast/>
       <Header />
       <ShopSection keyword={keyword} pageNumber={pageNumber}/>
       <CallToActionSection />

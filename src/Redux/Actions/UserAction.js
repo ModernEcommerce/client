@@ -16,11 +16,19 @@ import {
   } from "../Constants/UserConstant";
   import axios from "axios";
 import { CART_CLEAR_ITEMS } from "../Constants/CartConstant";
-  // import { ORDER_LIST_MY_RESET } from "../Constants/OrderConstants";
-  // import { CART_CLEAR_ITEMS } from "../Constants/CartConstants";
+import { ORDER_LIST_MY_RESET } from "../Constants/OrderConstant";
+import { toast } from "react-toastify";
+
+const ToastObjects = {
+  pauseOnFocusLoss: false,
+  draggable: false,
+  pauseOnHover: false,
+  autoClose: 2000,
+};
 
   // LOGIN
   export const login = ({email, password}) => async (dispatch) => {
+
     try {
       dispatch({ type: USER_LOGIN_REQUEST });
   
@@ -31,9 +39,12 @@ import { CART_CLEAR_ITEMS } from "../Constants/CartConstant";
       };
   
       const { data } = await axios.post(`/api/users/login`, { email, password }, config);
-      dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-  
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      if( data ){
+        toast.success(`Hi ${data.name}, welcome to shop`, ToastObjects);
+        dispatch({ type: USER_LOGIN_SUCCESS, payload: data });        
+        localStorage.setItem("userInfo", JSON.stringify(data));
+      }
+
     } catch (error) {
       dispatch({
         type: USER_LOGIN_FAIL,
@@ -51,7 +62,7 @@ import { CART_CLEAR_ITEMS } from "../Constants/CartConstant";
     dispatch({ type: USER_LOGOUT });
     dispatch({ type: USER_DETAILS_RESET });
     dispatch({type: CART_CLEAR_ITEMS});
-    // dispatch({ type: ORDER_LIST_MY_RESET });
+    dispatch({ type: ORDER_LIST_MY_RESET });
   };
   
   // REGISTER
