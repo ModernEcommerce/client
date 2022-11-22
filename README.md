@@ -69,4 +69,16 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-###### 4:28 (28 Shipping)
+###### Things to dev
+```
+1. Manage img admin (Important)
+2. Select payment method by cash (Important)
+3. Toast for orderScreen (Important)
+4. Add Footer and Fix Header
+5. Add super product
+6. Change password through the verify email
+7. Decorate HomeScreen
+8. Slider img in detail product
+9. Fix theme
+10. Api delivery for VN (Hard)
+```
