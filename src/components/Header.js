@@ -78,8 +78,8 @@ const Header = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-6 d-flex align-items-center display-none">
-              <p>+123456777</p>
-              <p>nguyenphucminh.lx@gmail.com</p>
+              <p>{userInfo ? userInfo.phone : ''}</p>
+              <p>{userInfo ? userInfo.email : ''}</p>
             </div>
             <div className=" col-12 col-lg-6 justify-content-center justify-content-lg-end d-flex align-items-center">
               <Link to="">

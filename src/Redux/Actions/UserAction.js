@@ -66,7 +66,7 @@ const ToastObjects = {
   };
   
   // REGISTER
-  export const register = ({name, email, password}) => async (dispatch) => {
+  export const register = ({name, email, phone, password}) => async (dispatch) => {
     try {
       dispatch({ type: USER_REGISTER_REQUEST });
   
@@ -76,7 +76,7 @@ const ToastObjects = {
         },
       };
   
-      const { data } = await axios.post(`/api/users`, { name, email, password }, config);
+      const { data } = await axios.post(`/api/users`, { name, email, phone, password }, config);
       dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
       dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
   
