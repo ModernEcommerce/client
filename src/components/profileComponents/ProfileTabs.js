@@ -10,11 +10,12 @@ const ProfileTabs = () => {
   const [data, setData] = useState({
     username: '',
     email: '',
+    phone: '',
     password: '',
     passwordConfirm: '',
   })
   const [ isStop , setIsStop ] = useState(false)
-  const { username, email, password, passwordConfirm } = data;
+  const { username, email, phone, password, passwordConfirm } = data;
   const handelChange = e => {
     e.preventDefault();
     setData(prev => {
@@ -53,6 +54,7 @@ const ProfileTabs = () => {
       setData({
         username: user.name || '',
         email: user.email || '',
+        phone: user.phone || '',
         password: '',
         passwordConfirm: '',
       })
@@ -83,6 +85,14 @@ const ProfileTabs = () => {
             <input onChange={handelChange} value={email} name="email" className="form-control" type="email" required/>
           </div>
         </div>
+
+        <div className="col-md-6">
+          <div className="form">
+            <label htmlFor="account-phone">Phone Number</label>
+            <input onChange={handelChange} value={phone} name="phone" className="form-control" type="phone" required/>
+          </div>
+        </div>
+        
         <div className="col-md-6">
           <div className="form">
             <label htmlFor="account-pass">New Password</label>

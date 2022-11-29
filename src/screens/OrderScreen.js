@@ -15,7 +15,7 @@ const OrderScreen = () => {
   const { id: idParam } = useParams();
   const dispatch = useDispatch();
 
-  const [sdkReady, setSdkReady] = useState(false);
+  const [sdkReady, setSdkReady] = useState(true);
   const { loading: loadingPay, error: errorPay, success } = useSelector(state => state.orderPay);
   if(!loading && !error){
     order.itemsPrice = order.orderItems.reduce((sum, current) => sum + current.price * current.qty, 0).toFixed(2);

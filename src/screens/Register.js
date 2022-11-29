@@ -10,9 +10,10 @@ const Register = () => {
     name: '',
     email: '',
     password: '',
+    phone: '',
   })
   const dispatch = useDispatch();
-  const {name, email, password} = data; 
+  const {name, email, phone, password} = data; 
   const {userInfo} = useSelector(state => state.userLogin);
   const {error, loading} = useSelector(state => state.userRegister);
   const history = useHistory();
@@ -44,6 +45,7 @@ const Register = () => {
         <form className="Login col-md-8 col-lg-4 col-11" onSubmit={handleSubmit}>
           <input onChange={handelChange} name="name" value={name} type="text" placeholder="Username" required/>
           <input onChange={handelChange} name="email" type="email" value={email} placeholder="Email" required/>
+          <input onChange={handelChange} name="phone" type="phone" value={phone} placeholder="Phone number" required/>
           <input onChange={handelChange} name="password" type="password" value={password} placeholder="Password" required />
 
           <button type="submit">{
