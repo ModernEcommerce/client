@@ -10,9 +10,7 @@ const ShopSection = (props) => {
   const { keyword, pageNumber } = props
   const dispatch = useDispatch()
   const productList = useSelector((state)=> state.productList)
-  const { loading, error, products, page, pages } = productList
-  console.log(page)
-  console.log(pages)
+  const { loading, error, products, currentPage, totalPage } = productList
 
   useEffect(()=>{
     dispatch(listProduct(keyword, pageNumber))
@@ -62,8 +60,8 @@ const ShopSection = (props) => {
                 }
                 {/* Pagination */}
                 <Pagination 
-                  pages={pages} 
-                  currentPage={page} 
+                  totalPage={totalPage} 
+                  currentPage={currentPage} 
                   keyword={keyword ? keyword : ""}
                 />
               </div>

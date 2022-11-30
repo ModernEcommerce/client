@@ -18,8 +18,8 @@ export const producerListReducer = (state = { products: [] }, action) =>{
             return { loading: true, products: []}
         case PRODUCT_LIST_SUCCESS:
             return { loading: false,
-              pages: action.payload.pages,
-              page: action.payload.page,
+              totalPage: action.payload.totalPage,
+              currentPage: action.payload.currentPage,
               products: action.payload.products}
         case PRODUCT_LIST_FAIL:
             return { loading: false, error: action.payload}
