@@ -9,7 +9,8 @@ import {
     PRODUCT_CREATE_REVIEW_REQUEST,
     PRODUCT_CREATE_REVIEW_SUCCESS,
     PRODUCT_CREATE_REVIEW_FAIL,
-    PRODUCT_CREATE_REVIEW_RESET
+    PRODUCT_CREATE_REVIEW_RESET,
+    PRODUCT_LIST_RESET
  } from "../Constants/ProductConstants.js"
 
 export const producerListReducer = (state = { products: [] }, action) =>{
@@ -23,6 +24,8 @@ export const producerListReducer = (state = { products: [] }, action) =>{
               products: action.payload.products}
         case PRODUCT_LIST_FAIL:
             return { loading: false, error: action.payload}
+        case PRODUCT_LIST_RESET:
+            return {}
         default:
             return state
     }

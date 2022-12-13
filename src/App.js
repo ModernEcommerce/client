@@ -13,6 +13,8 @@ import ProfileScreen from "./screens/ProfileScreen";
 import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
+import ActiveAccount from "./screens/ActiveAccount";
+import ResetPassword from "./screens/ResetPassword";
 import NotFound from "./screens/NotFound";
 import PrivateRouter from "./PrivateRouter";
 import { useSelector } from "react-redux";
@@ -35,6 +37,8 @@ const App = () => {
         <Route path="/page/:pageNumber" component={HomeScreen} exact />
         <Route path="/search/:keyword/page/:pageNumber" component={HomeScreen} exact />
         <Route path="/products/:id" component={SingleProduct} />
+        <Route path="/account/activate/:token" component={ActiveAccount} />
+        <Route path="/account/reset/:token" component={ResetPassword} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <PrivateRouter path="/profile" component={ProfileScreen} />

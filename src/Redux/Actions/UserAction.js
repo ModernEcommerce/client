@@ -1,8 +1,17 @@
 import {
+  USER_CONFIRM_FORGOT_FAIL,
+  USER_CONFIRM_FORGOT_REQUEST,
+  USER_CONFIRM_FORGOT_SUCCESS,
+  USER_CONFIRM_REGISTER_FAIL,
+  USER_CONFIRM_REGISTER_REQUEST,
+    USER_CONFIRM_REGISTER_SUCCESS,
     USER_DETAILS_FAIL,
     USER_DETAILS_REQUEST,
     USER_DETAILS_RESET,
     USER_DETAILS_SUCCESS,
+    USER_FORGOT_FAIL,
+    USER_FORGOT_REQUEST,
+    USER_FORGOT_SUCCESS,
     USER_LOGIN_FAIL,
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
@@ -78,9 +87,6 @@ const ToastObjects = {
   
       const { data } = await axios.post(`/api/users`, { name, email, phone, password }, config);
       dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
-      dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
-  
-      localStorage.setItem("userInfo", JSON.stringify(data));
     } catch (error) {
       dispatch({
         type: USER_REGISTER_FAIL,
@@ -91,7 +97,87 @@ const ToastObjects = {
       });
     }
   };
+
+  // CONFIRM REGISTER
+  export const confirmRegister = (token) => async (dispatch) => {
+    try {
+      dispatch({ type: USER_CONFIRM_REGISTER_REQUEST });
   
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const formatToken = {
+        "activation_token": token
+      }
+      const { data } = await axios.post(`/api/users/active`, formatToken , config);
+      dispatch({ type: USER_CONFIRM_REGISTER_SUCCESS, payload: data });
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    } catch (error) {
+      dispatch({
+        type: USER_CONFIRM_REGISTER_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+  // FORGOT PASS
+  export const forgotPass = (email) => async (dispatch) => {
+    try {
+      dispatch({ type: USER_FORGOT_REQUEST });
+  
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const formatEmail = {
+        "forgot_email": email
+      }
+      const { data } = await axios.post(`/api/users/forgotpass`, formatEmail, config);
+      dispatch({ type: USER_FORGOT_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({
+        type: USER_FORGOT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+
+  // CONFIRM REGISTER
+  export const confirmForgot = (dataReset) => async (dispatch) => {
+    try {
+      dispatch({ type: USER_CONFIRM_FORGOT_REQUEST });
+  
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.post(`/api/users/confirm/password`, dataReset , config);
+      dispatch({ type: USER_CONFIRM_FORGOT_SUCCESS, payload: data });
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    } catch (error) {
+      dispatch({
+        type: USER_CONFIRM_FORGOT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
   // USER DETAILS
   export const getUserDetails = () => async (dispatch, getState) => {
     try {

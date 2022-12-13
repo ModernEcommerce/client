@@ -1,14 +1,27 @@
 import {
+  USER_CONFIRM_FORGOT_FAIL,
+  USER_CONFIRM_FORGOT_REQUEST,
+  USER_CONFIRM_FORGOT_RESET,
+  USER_CONFIRM_FORGOT_SUCCESS,
+  USER_CONFIRM_REGISTER_FAIL,
+  USER_CONFIRM_REGISTER_REQUEST,
+    USER_CONFIRM_REGISTER_RESET,
+    USER_CONFIRM_REGISTER_SUCCESS,
     USER_DETAILS_FAIL,
     USER_DETAILS_REQUEST,
     USER_DETAILS_RESET,
     USER_DETAILS_SUCCESS,
+    USER_FORGOT_FAIL,
+    USER_FORGOT_REQUEST,
+    USER_FORGOT_RESET,
+    USER_FORGOT_SUCCESS,
     USER_LOGIN_FAIL,
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGOUT,
     USER_REGISTER_FAIL,
     USER_REGISTER_REQUEST,
+    USER_REGISTER_RESET,
     USER_REGISTER_SUCCESS,
     USER_UPDATE_PROFILE_FAIL,
     USER_UPDATE_PROFILE_REQUEST,
@@ -37,14 +50,64 @@ import {
       case USER_REGISTER_REQUEST:
         return { loading: true };
       case USER_REGISTER_SUCCESS:
-        return { loading: false, userInfo: action.payload };
+        return { loading: false, success : true, message: action.payload };
       case USER_REGISTER_FAIL:
         return { loading: false, error: action.payload };
+      case USER_REGISTER_RESET:
+        return {}
+      default:
+        return state;
+    }
+};
+
+  // CONFIRM REGISTER
+  export const userConfirmRegisterReducer = (state = {}, action) => {
+    switch (action.type) {
+      case USER_CONFIRM_REGISTER_REQUEST:
+        return { loading: true };
+      case USER_CONFIRM_REGISTER_SUCCESS:
+        return { loading: false, success: true, userInfo: action.payload};
+      case USER_CONFIRM_REGISTER_FAIL:
+        return { loading: false, error: action.payload };
+      case USER_CONFIRM_REGISTER_RESET:
+        return {}
       default:
         return state;
     }
   };
   
+  // FORGOT PASS
+  export const userForgotReducer = (state = {}, action) => {
+    switch (action.type) {
+      case USER_FORGOT_REQUEST:
+        return { loading: true };
+      case USER_FORGOT_SUCCESS:
+        return { loading: false, success: true, message: action.payload};
+      case USER_FORGOT_FAIL:
+        return { loading: false, error: action.payload };
+      case USER_FORGOT_RESET:
+        return {}
+      default:
+        return state;
+    }
+  };
+
+  // CONFIRM FORGOT
+  export const userConfirmForgotReducer = (state = {}, action) => {
+    switch (action.type) {
+      case USER_CONFIRM_FORGOT_REQUEST:
+        return { loading: true };
+      case USER_CONFIRM_FORGOT_SUCCESS:
+        return { loading: false, success: true, message: action.payload};
+      case USER_CONFIRM_FORGOT_FAIL:
+        return { loading: false, error: action.payload };
+      case USER_CONFIRM_FORGOT_RESET:
+        return {}
+      default:
+        return state;
+    }
+  };
+
   // USER DETAILS
   export const userDetailsReducer = (state = { user: {} }, action) => {
     switch (action.type) {
