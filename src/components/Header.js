@@ -6,6 +6,7 @@ import { getUserDetails, logout } from "../Redux/Actions/UserAction";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import debounce from "lodash.debounce";
+import { USER_FORGOT_RESET, USER_REGISTER_RESET } from "../Redux/Constants/UserConstant";
 const Header = () => {
   const MyVerticallyCenteredModal = (props) =>{
     return (
@@ -44,6 +45,7 @@ const Header = () => {
   const {user} = useSelector(state => state.userDetails);
   
   const handleLogout = e =>{
+    e.preventDefault()
     setModalShow(true)
   }
 
@@ -210,7 +212,7 @@ const Header = () => {
                           Profile
                         </Link>
 
-                        <Link className="dropdown-item" to="#" onClick={handleLogout}>
+                        <Link className="dropdown-item" to="#" onClick={(e)=>handleLogout(e)}>
                           Logout
                         </Link>
                         <MyVerticallyCenteredModal
@@ -224,13 +226,25 @@ const Header = () => {
                     (
                       < >
                       
-                          <Link  to="/login">
-                            Login
+                          <Link to ="#">
+                            <div onClick={(e)=>{
+                              e.preventDefault()
+                              dispatch({type: USER_FORGOT_RESET})
+                              history.push('/login')
+                            }}>
+                              Login
+                            </div>
+                          </Link>
+                          <Link to ="#">
+                            <div onClick={(e)=>{
+                              e.preventDefault()
+                              dispatch({type: USER_REGISTER_RESET})
+                              history.push('/register')
+                            }}>
+                              Register
+                            </div>
                           </Link>
 
-                          <Link  to="register">
-                            Register
-                          </Link>
                         
                       </>
                     )

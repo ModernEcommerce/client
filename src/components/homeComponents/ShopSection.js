@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProduct } from "../../Redux/Actions/ProductAction.js"
 import Loading from "../LoadingError/Loading"
 import Message from "../LoadingError/Error";
+import { PRODUCT_LIST_RESET } from "../../Redux/Constants/ProductConstants";
 const ShopSection = (props) => {
   const { keyword, pageNumber } = props
   const dispatch = useDispatch()
@@ -13,6 +14,7 @@ const ShopSection = (props) => {
   const { loading, error, products, currentPage, totalPage } = productList
 
   useEffect(()=>{
+    dispatch({type: PRODUCT_LIST_RESET})
     dispatch(listProduct(keyword, pageNumber))
   },[dispatch, keyword, pageNumber])
   return (
@@ -48,7 +50,7 @@ const ShopSection = (props) => {
 
                               <Rating
                                 value={product.rating}
-                                text={`${product.numReviews} reviews`}
+                                text={`${product.numberReviews} reviews`}
                               />
                               <h4>${product.price}</h4>
                             </div>

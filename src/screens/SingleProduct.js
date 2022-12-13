@@ -45,15 +45,12 @@ const SingleProduct = () => {
       setRating(0);
       setComment('');
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET});
-      console.log("1")
     }
 
     dispatch(listProductDetails(id));
-    console.log("2")
 
     return () => {
       dispatch({type: PRODUCT_DETAILS_RESET});
-      console.log("3")
     };
 
   }, [id, dispatch, success]);
