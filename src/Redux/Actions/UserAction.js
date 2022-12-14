@@ -1,4 +1,7 @@
 import {
+  USER_CHANGE_FAIL,
+  USER_CHANGE_REQUEST,
+  USER_CHANGE_SUCCESS,
   USER_CONFIRM_FORGOT_FAIL,
   USER_CONFIRM_FORGOT_REQUEST,
   USER_CONFIRM_FORGOT_SUCCESS,
@@ -170,6 +173,33 @@ const ToastObjects = {
     } catch (error) {
       dispatch({
         type: USER_CONFIRM_FORGOT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+  // CHANGE PROFILE
+  export const changeProfile = ({emailModal, passModal}) => async (dispatch) => {
+    try {
+      dispatch({ type: USER_CHANGE_REQUEST });
+  
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const formatForm = {
+        "email": emailModal,
+        "password": passModal
+      }
+      const { data } = await axios.post(`/api/users/changeprofile`, formatForm, config);
+      dispatch({ type: USER_CHANGE_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({
+        type: USER_CHANGE_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

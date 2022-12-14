@@ -1,4 +1,8 @@
 import {
+  USER_CHANGE_FAIL,
+  USER_CHANGE_REQUEST,
+  USER_CHANGE_RESET,
+  USER_CHANGE_SUCCESS,
   USER_CONFIRM_FORGOT_FAIL,
   USER_CONFIRM_FORGOT_REQUEST,
   USER_CONFIRM_FORGOT_RESET,
@@ -102,6 +106,22 @@ import {
       case USER_CONFIRM_FORGOT_FAIL:
         return { loading: false, error: action.payload };
       case USER_CONFIRM_FORGOT_RESET:
+        return {}
+      default:
+        return state;
+    }
+  };
+
+  // CHANGE PROFILE
+  export const userChangeProfileReducer = (state = {}, action) => {
+    switch (action.type) {
+      case USER_CHANGE_REQUEST:
+        return { loading: true };
+      case USER_CHANGE_SUCCESS:
+        return { loading: false, success: true, info: action.payload };
+      case USER_CHANGE_FAIL:
+        return { loading: false, error: action.payload };
+      case USER_CHANGE_RESET:
         return {}
       default:
         return state;

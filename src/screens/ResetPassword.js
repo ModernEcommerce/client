@@ -24,7 +24,6 @@ const ResetPassword = ({match}) => {
     passwordagain: '',
     token
   })
-
   const handelChange = e =>{
     e.preventDefault();
     setData(prev =>{
@@ -36,7 +35,12 @@ const ResetPassword = ({match}) => {
   }
   const handleSubmit = e =>{
     e.preventDefault();
-    dispatch(confirmForgot({...data}))
+    if (data.password !== data.passwordagain) {
+      toast.error('Password does not match', ToastObjects);
+      return;
+    }else{
+      dispatch(confirmForgot({...data}))
+    }
   }
 
   const {loading, error, success, message} = useSelector((state)=>state.userConfirmForgot)
