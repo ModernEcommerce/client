@@ -4,9 +4,11 @@ import { Link, useHistory } from "react-router-dom";
 import Header from "./../components/Header";
 import Message from '../components/LoadingError/Error';
 import Loading from './../components/LoadingError/Loading';
-import { forgotPass, login } from "../Redux/Actions/UserAction";
+import { forgotPass, login, loginGoogle } from "../Redux/Actions/UserAction";
 import Toast from './../components/LoadingError/Toast';
 import { toast } from "react-toastify";
+import { GoogleLogin } from 'react-google-login';
+import {gapi} from 'gapi-script'
 const ToastObjects = {
   pauseOnFocusLoss: false,
   draggable: false,
@@ -40,13 +42,24 @@ const Login = () => {
     }
   }
   const {userInfo, loading, error} = useSelector(state => state.userLogin);
+  const {userInfo: userInfoGG , loading: loadingGG, error: errorGG} = useSelector(state => state.userLoginGoogle);
   const {loading: loadingForgot , error: errorForgot ,success: successForgot ,message} = useSelector(state => state.userForgot);
 
+  const responseGoogle = (response) => {
+    dispatch(loginGoogle(response));
+  }
+
   useEffect(() =>{
+  function start() {
+      gapi.auth2.init({client_id: '344262799523-2p7e0n0qu1desabj44knm8o8ic40bi3f.apps.googleusercontent.com'})
+    }
+    gapi.load('client:auth2', start)
+    
     if(userInfo){
       history.push('/');
     }
-  }, [userInfo, history, dispatch])
+  }, [userInfo, userInfoGG, history, dispatch])
+
   const handleSubmit = e =>{
     e.preventDefault();
     dispatch(login({...data}))
@@ -61,6 +74,9 @@ const Login = () => {
           error && (<Message variant="alert-danger">{error}</Message>)
         }
         {
+          errorGG && (<Message variant="alert-danger">{errorGG}</Message>)
+        }
+        {
           loadingForgot ? (<Loading/>) : errorForgot ? (<Message variant="alert-danger">{errorForgot}</Message>) 
           : successForgot ? (
             <Message variant="alert-success">{message}</Message>
@@ -70,8 +86,14 @@ const Login = () => {
           <input type="email" value={email} name="email" onChange={handleChange} placeholder="Email" />
           <input type="password" autoComplete="off" value={password} name="password" onChange={handleChange} placeholder="Password" />
           <button type="submit">{
-            loading ? 'Logging...' : 'Login'
+            loading || loadingGG ? 'Logging...' : 'Login'
           }</button>
+          <GoogleLogin
+            clientId="344262799523-2p7e0n0qu1desabj44knm8o8ic40bi3f.apps.googleusercontent.com"
+            buttonText="Login with google"
+            onSuccess={responseGoogle}
+            cookiePolicy={'single_host_origin'}
+          />
           <p>
             <Link to={"/register"}>Create Account</Link>
           </p>

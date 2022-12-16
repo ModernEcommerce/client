@@ -16,6 +16,9 @@ import {
     USER_FORGOT_REQUEST,
     USER_FORGOT_SUCCESS,
     USER_LOGIN_FAIL,
+    USER_LOGIN_GG_FAIL,
+    USER_LOGIN_GG_REQUEST,
+    USER_LOGIN_GG_SUCCESS,
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGOUT,
@@ -68,6 +71,37 @@ const ToastObjects = {
     }
   };
   
+
+  // LOGIN_GOOGLE
+  export const loginGoogle = (response) => async (dispatch) => {
+    try {
+      dispatch({ type: USER_LOGIN_GG_REQUEST });
+  
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const formatTokenId  ={
+        tokenId: response.tokenId
+      }
+      const { data } = await axios.post(`/api/users/google_login`, formatTokenId, config);
+      if( data ){
+        toast.success(`Hi ${data.name}, welcome to shop`, ToastObjects);
+        dispatch({ type: USER_LOGIN_GG_SUCCESS, payload: data });   
+        localStorage.setItem("userInfo", JSON.stringify(data));     
+      }
+    } catch (error) {
+      dispatch({
+        type: USER_LOGIN_GG_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
   // LOGOUT
   export const logout = () => async(dispatch) => {
     localStorage.removeItem("userInfo");
@@ -213,7 +247,6 @@ const ToastObjects = {
     try {
       dispatch({ type: USER_DETAILS_REQUEST });
       const { userLogin: { userInfo }} = getState();
-      
       const config = {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,

@@ -19,7 +19,11 @@ import {
     USER_FORGOT_REQUEST,
     USER_FORGOT_RESET,
     USER_FORGOT_SUCCESS,
+    USER_GG_LOGOUT,
     USER_LOGIN_FAIL,
+    USER_LOGIN_GG_FAIL,
+    USER_LOGIN_GG_REQUEST,
+    USER_LOGIN_GG_SUCCESS,
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGOUT,
@@ -42,6 +46,22 @@ import {
       case USER_LOGIN_FAIL:
         return { loading: false, error: action.payload };
       case USER_LOGOUT:
+        return {};
+      default:
+        return state;
+    }
+  };
+
+  // LOGIN_GOOGLE
+  export const userLoginGGReducer = (state = {}, action) => {
+    switch (action.type) {
+      case USER_LOGIN_GG_REQUEST:
+        return { loading: true};
+      case USER_LOGIN_GG_SUCCESS:
+        return { loading: false, success: true, userInfo: action.payload};
+      case USER_LOGIN_GG_FAIL:
+        return { loading: false, error: action.payload };
+      case USER_GG_LOGOUT:
         return {};
       default:
         return state;
