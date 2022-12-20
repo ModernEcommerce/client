@@ -51,7 +51,7 @@ const Login = () => {
 
   useEffect(() =>{
   function start() {
-      gapi.auth2.init({client_id: '344262799523-2p7e0n0qu1desabj44knm8o8ic40bi3f.apps.googleusercontent.com'})
+      gapi.auth2.init({client_id: '212016326790-5p0pb3fh7m7jpccqa3b2mrm9gqaunq9a.apps.googleusercontent.com'})
     }
     gapi.load('client:auth2', start)
     
@@ -89,7 +89,7 @@ const Login = () => {
             loading || loadingGG ? 'Logging...' : 'Login'
           }</button>
           <GoogleLogin
-            clientId="344262799523-2p7e0n0qu1desabj44knm8o8ic40bi3f.apps.googleusercontent.com"
+            clientId="212016326790-5p0pb3fh7m7jpccqa3b2mrm9gqaunq9a.apps.googleusercontent.com"
             buttonText="Login with google"
             onSuccess={responseGoogle}
             cookiePolicy={'single_host_origin'}
