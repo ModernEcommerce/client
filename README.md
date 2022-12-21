@@ -82,3 +82,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 9. Fix theme
 10. Api delivery for VN (Hard)
 ```
+https://trungquandev.com/nodejs-viet-api-gui-email-voi-oauth2-va-nodemailer/
