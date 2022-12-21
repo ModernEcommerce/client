@@ -201,7 +201,7 @@ textarea:focus {
 /* NEWSLATTER */
 .subscribe-section {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.226), rgba(0, 0, 0, 0.226)),
-    url("https://sasshoes-com.s3.us-west-2.amazonaws.com/img/banner-uplift-21.jpg")
+    url("https://www.smartsheet.com/sites/default/files/2021-08/solutions-technology-hi-res-graphic-only-v3.png")
       no-repeat scroll center / cover;
   padding: 100px 0 100px;
 }
@@ -214,6 +214,10 @@ textarea:focus {
   text-transform: uppercase;
 }
 .subscribe-head p {
+  background-color: #0080ff;
+  align-items: center;
+  display: inline-block;
+  width: 300px;
   color: #fff;
   font-size: 18px;
   line-height: 22px;
@@ -720,4 +724,11 @@ textarea:focus {
   display: flex;
   justify-content: center;
   padding: 10px 0px;
+}
+.lv1{
+  list-style: none;
+  display: flex;
+}
+.lv1 > li{
+  padding-right: 5px;
 }

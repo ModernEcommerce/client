@@ -5,16 +5,9 @@ import Header from "./../components/Header";
 import Message from '../components/LoadingError/Error';
 import Loading from './../components/LoadingError/Loading';
 import { forgotPass, login, loginGoogle } from "../Redux/Actions/UserAction";
-import Toast from './../components/LoadingError/Toast';
-import { toast } from "react-toastify";
 import { GoogleLogin } from 'react-google-login';
 import {gapi} from 'gapi-script'
-const ToastObjects = {
-  pauseOnFocusLoss: false,
-  draggable: false,
-  pauseOnHover: false,
-  autoClose: 2000,
-};
+
 const Login = () => {
   window.scrollTo(0, 0);
   const history = useHistory();
@@ -35,11 +28,7 @@ const Login = () => {
   }
   const handleForgotPassword = e =>{
     e.preventDefault()
-    if(email===''){
-      toast.warning("Please enter your email", ToastObjects);
-    }else{
-      dispatch(forgotPass(email))
-    }
+    dispatch(forgotPass(email))
   }
   const {userInfo, loading, error} = useSelector(state => state.userLogin);
   const {userInfo: userInfoGG , loading: loadingGG, error: errorGG} = useSelector(state => state.userLoginGoogle);
@@ -67,7 +56,6 @@ const Login = () => {
   const {email, password} = data;
   return (
     <>
-      <Toast/>
       <Header />
       <div className="container d-flex flex-column justify-content-center align-items-center login-center">
         {

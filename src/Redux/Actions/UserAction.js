@@ -115,15 +115,19 @@ const ToastObjects = {
   export const register = ({name, email, phone, password}) => async (dispatch) => {
     try {
       dispatch({ type: USER_REGISTER_REQUEST });
-  
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-  
-      const { data } = await axios.post(`/api/users`, { name, email, phone, password }, config);
-      dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+      if(phone.length !== 10){
+        toast.error(`The phone number is wrong`, ToastObjects);
+      }
+      else{
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+    
+        const { data } = await axios.post(`/api/users`, { name, email, phone, password }, config);
+        dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+      }
     } catch (error) {
       dispatch({
         type: USER_REGISTER_FAIL,
@@ -166,18 +170,23 @@ const ToastObjects = {
   // FORGOT PASS
   export const forgotPass = (email) => async (dispatch) => {
     try {
-      dispatch({ type: USER_FORGOT_REQUEST });
-  
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const formatEmail = {
-        "forgot_email": email
+      if(email===''){
+        toast.warning("Please enter your email", ToastObjects);
       }
-      const { data } = await axios.post(`/api/users/forgotpass`, formatEmail, config);
-      dispatch({ type: USER_FORGOT_SUCCESS, payload: data });
+      else{
+        dispatch({ type: USER_FORGOT_REQUEST });
+    
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const formatEmail = {
+          "forgot_email": email
+        }
+        const { data } = await axios.post(`/api/users/forgotpass`, formatEmail, config);
+        dispatch({ type: USER_FORGOT_SUCCESS, payload: data });
+      }
     } catch (error) {
       dispatch({
         type: USER_FORGOT_FAIL,

@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import debounce from "lodash.debounce";
 import { USER_FORGOT_RESET, USER_REGISTER_RESET } from "../Redux/Constants/UserConstant";
+import { listCategory } from './../Redux/Actions/CategoryAction';
 const Header = () => {
   const MyVerticallyCenteredModal = (props) =>{
     return (
@@ -42,6 +43,7 @@ const Header = () => {
   const data = useSelector((state)=> state.theme)
   const { cartItems } = useSelector(state => state.cart);
   const { userInfo } = useSelector(state => state.userLogin);
+  const { categories } = useSelector(state => state.categoryList);
   const {user} = useSelector(state => state.userDetails);
   
   const handleLogout = e =>{
@@ -71,6 +73,7 @@ const Header = () => {
     debounceDropDown(e.target.value);
   }
   useEffect(()=>{
+    dispatch(listCategory())
     dispatch(getUserDetails())
   }, [dispatch])
   return (
@@ -82,6 +85,11 @@ const Header = () => {
             <div className="col-md-6 d-flex align-items-center display-none">
               <p>{userInfo ? userInfo.phone : ''}</p>
               <p>{userInfo ? userInfo.email : ''}</p>
+              {/* <ul class="lv1">
+              {categories?.map((item, index)=>(
+                  <li key={index}>{item.name}</li>
+                ))}
+              </ul> */}
             </div>
             <div className=" col-12 col-lg-6 justify-content-center justify-content-lg-end d-flex align-items-center">
               <Link to="">

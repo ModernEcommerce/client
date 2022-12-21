@@ -6,6 +6,7 @@ import { cartReducer } from './Reducers/CartReducer.js';
 import { themeReducer } from './Reducers/ThemeReducer.js'
 import { userChangeProfileReducer, userConfirmForgotReducer, userConfirmRegisterReducer, userDetailsReducer, userForgotReducer, userLoginGGReducer, userLoginReducer, userRegisterReducer, userUpdateProfileReducer } from './Reducers/UserReducer.js';
 import { orderCreateReducer, orderDetailsReducer, orderListMyReducer, orderPayReducer} from './Reducers/OrderReducer';
+import { categoryListReducer } from './Reducers/CategoryReducer';
 const reducer = combineReducers({
     productList: producerListReducer,
     productDetails: productDetailsReducer,
@@ -24,7 +25,8 @@ const reducer = combineReducers({
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
-    orderMyList: orderListMyReducer
+    orderMyList: orderListMyReducer,
+    categoryList: categoryListReducer
 })
 
 const initialState = {
